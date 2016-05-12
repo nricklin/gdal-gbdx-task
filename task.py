@@ -21,7 +21,7 @@ for abs_filename in files:
     print relative_path
     print filename
     output_directory = outdir + '/' + relative_path
-    output_abs_filename = output_directory + filename
+    output_abs_filename = output_directory + '/' + filename
     try:
         os.makedirs(output_directory)
     except:
