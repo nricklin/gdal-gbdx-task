@@ -1,46 +1,44 @@
 import os, subprocess, json
-outdir = '/mnt/work/output/gdalinfo'
+outdir = '/mnt/work/output/data'
 indir = '/mnt/work/input/data'
-written = 0
-unwritten = 0
-for root, dirs, filenames in os.walk(indir):
-    for f in filenames:
-        #print "Full path:"
-	inputpath = os.path.join(root,f)
-	#print inputpath
- 	#print "Place to put output:"
-	outputpath = inputpath.replace(indir,outdir)
-	#print outputpath
 
-	fileName, fileExtension = os.path.splitext(outputpath)
-	#outputfile = fileName + ".txt"
-	outputfile = outputpath + "_gdalinfo.txt"
-	#print outputfile
+input_data = json.load(open('/mnt/work/input/ports.json'))
 
 
-	# try to perform gdalinfo on this file:
-	proc = subprocess.Popen(["gdalinfo %s" % inputpath], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+filetype = input_data['filetype']
+cmd = input_data['cmd']
+
+
+# get all input files of a type
+files = glob2.iglob(indir + "/**/*." + filetype.lower())
+files.extend( glob2.iglob(indir + "/**/*." + filetype.upper()) )
+
+for abs_filename in files:
+	relative_filename = abs_filename.replace(indir,'').strip('/')
+	relative_path = '/'.join(relative_filename.split('/')[:-1])
+	filename = relative_filename.split('/')[-1:][0]
+	print relative_filename
+	print relative_path
+	print filename
+
+
+	output_directory = outdir + '/' + relative_path
+	output_abs_filename = output_directory + filename
+
+	try:
+		os.makedirs(output_directory)
+
+	# Generate command:
+	command = cmd.replace('$input',abs_filename)
+	command = command.replace('$output',output_abs_filename)
+
+	proc = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out, err = proc.communicate()
-        status = proc.returncode
+    status = proc.returncode
 
-	#print out, err
-	#print status
-
-	if status == 0:
-		written = written + 1
-		print "Writing to %s" % outputfile
-		outputdir = os.path.dirname(outputfile)
-		try:
-			os.makedirs(outputdir)
-		except OSError as e:  # If the directory already exists, don't worry about it
-			pass
-		with open(outputfile, "w") as text_file:
-			text_file.write(out)
-	else:
-		unwritten = unwritten + 1
+    print out
 
 
-	
-status = { "status": "success", "reason": "Retrieved gdalinfo for %s files.  Gdal did not recognize %s files." % (written,unwritten) }
+status = { "status": "success", "reason": "Ran stuff." }
 with open('/mnt/work/status.json', 'w') as outfile:
     json.dump(status, outfile)
