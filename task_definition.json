@@ -1,0 +1,44 @@
+{
+  "containerDescriptors": [
+    {
+      "type": "DOCKER",
+      "properties": {
+        "image": "nricklin/gdal-gbdx-task:latest"
+      }
+    }
+  ],
+  "description": "A task for running arbtrary bash commands with gdal installed!  It automatically iterates over all files of type you specify.",
+  "inputPortDescriptors": [
+    {
+      "required": true,
+      "type": "string",
+      "description": "The command to be exxecuted.  Substitute $input for input file, $output for output file.",
+      "name": "command"
+    },
+    {
+      "required": true,
+      "type": "string",
+      "description": "Filetype to iterate over and run on.",
+      "name": "filetype"
+    },
+    {
+      "required": true,
+      "type": "directory",
+      "description": "Input data directory.",
+      "name": "data"
+    }
+  ],
+  "outputPortDescriptors": [
+    {
+      "required": true,
+      "type": "directory",
+      "description": "Output data directory",
+      "name": "data"
+    }
+  ],
+  "properties": {
+    "isPublic": false,
+    "timeout": 7200
+  },
+  "name": "ricklin-gdal-test"
+}
