@@ -13,6 +13,10 @@ execution_strategy = input_data.get('execution_strategy')
 if execution_strategy == 'runonce':
 	command = cmd.replace('$indir',indir)
 	command = cmd.replace('$outdir',outdir)
+	proc = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	out, err = proc.communicate()
+	status = proc.returncode
+	print out
 
 
 if filetype or execution_strategy=='foreach':
