@@ -12,14 +12,20 @@
     {
       "required": true,
       "type": "string",
-      "description": "The command to be exxecuted.  Substitute $input for input file, $output for output file.",
+      "description": "The command to be exxecuted.  Substitute $input for input file, $output for output file, $indir for input directory, $outdir for output directory.",
       "name": "command"
     },
     {
-      "required": true,
+      "required": false,
       "type": "string",
       "description": "Filetype to iterate over and run on.",
       "name": "filetype"
+    },
+    {
+      "required": false,
+      "type": "string",
+      "description": "options: runonce | foreach",
+      "name": "execution_strategy"
     },
     {
       "required": true,

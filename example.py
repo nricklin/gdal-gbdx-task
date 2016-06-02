@@ -13,5 +13,5 @@ gdal_calc.py -A $input --A_band=2 -B $input --B_band=3 --outfile=$output \
 task.inputs.command = command
 
 workflow = gbdx.Workflow([task])
-workflow.savedata(task.outputs.data, location='gdal-test-task-output3')
+#workflow.savedata(task.outputs.data, location='gdal-test-task-output3')
 workflow.execute()
