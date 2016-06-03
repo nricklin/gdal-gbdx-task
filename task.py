@@ -12,7 +12,8 @@ execution_strategy = input_data.get('execution_strategy')
 
 if execution_strategy == 'runonce':
 	command = cmd.replace('$indir',indir)
-	command = cmd.replace('$outdir',outdir)
+	command = command.replace('$outdir',outdir)
+	print command
 	try:
 		os.makedirs(outdir)
 	except:
@@ -43,8 +44,8 @@ if filetype or execution_strategy=='foreach':
 			pass
 		command = cmd.replace('$input',abs_filename)
 		command = command.replace('$output',output_abs_filename)
-		command = cmd.replace('$indir',indir)
-		command = cmd.replace('$outdir',outdir)
+		command = command.replace('$indir',indir)
+		command = command.replace('$outdir',outdir)
 		proc = subprocess.Popen([command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out, err = proc.communicate()
 		status = proc.returncode
