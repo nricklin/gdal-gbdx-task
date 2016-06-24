@@ -7,7 +7,7 @@ input_data = json.load(open('/mnt/work/input/ports.json'))
 
 filetype = input_data.get('filetype')
 cmd = input_data['command']
-execution_strategy = input_data.get('execution_strategy')
+execution_strategy = input_data.get('execution_strategy', 'runonce')
 
 
 if execution_strategy == 'runonce':
